@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: tropicompta-${NEW_VERSION}
-          path: target/**/tropicompta-*.war
+          path: target/**/tropicompta-*.jar
 
         # The GITHUB_REF tag comes in the format 'refs/tags/xxx'.
         # If we split on '/' and take the 3rd value,
