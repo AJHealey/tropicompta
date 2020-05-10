@@ -1,0 +1,34 @@
+name: Publish release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Package
+        run: |
+          NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
+          echo "Version being published: ${NEW_VERSION}"
+          sbt package
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: tropicompta-${NEW_VERSION}
+          path: target/**/tropicompta-*.war
+
+        # The GITHUB_REF tag comes in the format 'refs/tags/xxx'.
+        # If we split on '/' and take the 3rd value,
+        # we can get the release name.
