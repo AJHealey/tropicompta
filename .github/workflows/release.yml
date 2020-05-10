@@ -1,8 +1,9 @@
 name: Publish release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 
 jobs:
   publish-release:
@@ -21,6 +22,7 @@ jobs:
         run: |
           NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "Version being published: ${NEW_VERSION}"
+          echo ::set-env name=ENV_VAR_NAME::${NEW_VARION}
           sbt package
 
       - name: Publish artifact
